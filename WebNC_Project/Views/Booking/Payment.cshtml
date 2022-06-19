@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Payment";
+    WebNC_Project.Models.Booking bill = ViewBag.Bill;
+}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Thanh toán hóa đơn #@bill.ID</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    @using (Html.BeginForm("Payment", "Booking", FormMethod.Post, new { @id = "payment-form" }))
+    {
+        @Html.Hidden("BillID",bill.ID)
+        <div class="form-group">
+            <label for="card-name">Card Name</label>
+            <input type="text" class="form-control" id="card-name" name="card-name" placeholder="Card Name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="@bill.Customer.Email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone" value="@bill.Customer.Phone" required>
+        </div>
+        <div class="form-group">
+            <label for="card-number">
+                Credit or debit card
+            </label>
+            <div id="card-number" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="card-cvc">
+                        CVC
+                    </label>
+                    <div id="card-cvc" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="card-exp">
+                        EXP
+                    </label>
+                    <div id="card-exp" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Used to display Element errors. -->
+        <div id="card-errors" role="alert" class="text-danger"></div>
+
+        <div class="form-group">
+            <button class="btn btn-primary btn-block">Submit Payment</button>
+        </div>
+    }
+</div>
+<script type="text/javascript">
+    var stripe = Stripe("pk_test_51LCP3IDPE2cLj6Jm2YEAyFGBMdr1IJ3G7sqAGKpiE1eD21KvTKohcF0NdGeWcOAlh3iKptDUtkMcGBf5cnimD28y00D0vcBn4L");
+    var elements = stripe.elements();
+    var style = {
+        base: {
+            color: "#32325d",
+            fontFamily: 'Arial, sans-serif',
+            fontSmoothing: "antialiased",
+            fontSize: "16px",
+            "::placeholder": {
+                color: "#32325d"
+            }
+        },
+        invalid: {
+            fontFamily: 'Arial, sans-serif',
+            color: "#fa755a",
+            iconColor: "#fa755a"
+        }
+    };
+    var card = elements.create("cardNumber");
+    var cvc = elements.create("cardCvc");
+    var exp = elements.create("cardExpiry");
+    // Stripe injects an iframe into the DOM
+    card.mount("#card-number");
+    cvc.mount("#card-cvc");
+    exp.mount("#card-exp");
+    card.addEventListener('change', function (event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+    // Create a token or display an error when the form is submitted.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function (result) {
+            if (result.error) {
+                // Inform the customer that there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Send the token to your server.
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+    function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // Submit the form
+        form.submit();
+    }
+</script>

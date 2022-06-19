@@ -1,0 +1,53 @@
+﻿@model WebNC_Project.ViewModel.ResetPassModel
+
+@{
+    ViewBag.Title = "EditPass";
+}
+
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="contact-text">
+                    <h2>Management your account</h2>
+                    <p>Change password</p>
+                </div>
+            </div>
+
+            <div class="col-lg-7 offset-lg-1">
+                @using (Html.BeginForm("EditPass", "Account", FormMethod.Post, new { @class = "contact-form" }))
+                {
+                    @Html.ValidationSummary(true)
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-3">
+                            @Html.LabelFor(m => m.OldPass)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(m => m.OldPass, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.OldPass, new { htmlAttributes = new { @placeholder = "Enter Old Password" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(m => m.NewPass)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(m => m.NewPass, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.NewPass, new { htmlAttributes = new { @placeholder = "Enter New Password" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(m => m.ConfirmPass)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(m => m.ConfirmPass, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.ConfirmPass, new { htmlAttributes = new { @placeholder = "Confirm New Password" } })
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <button type="submit">Change Password</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+

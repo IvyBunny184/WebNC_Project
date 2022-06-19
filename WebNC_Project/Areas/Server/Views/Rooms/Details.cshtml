@@ -1,0 +1,177 @@
+﻿@model WebNC_Project.Models.Room
+
+@{
+    ViewBag.Title = "Thông tin phòng ";
+    string role = Session["Role"] as string;
+}
+
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        <div class="panel panel-default panel-post">
+            <div class="panel-heading">
+                <h4>@Html.DisplayNameFor(s => s.ID) : @Model.ID</h4>
+            </div>
+            <div class="panel-body">
+                <div class="list-group font-16">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.DisplayNameFor(s => s.Name)
+                            </div>
+                            <div class="col-md-9">
+                                @Model.Name
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.DisplayNameFor(s => s.TypeID)
+                            </div>
+                            <div class="col-md-9">
+                                @Model.RoomType.NameType
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.DisplayNameFor(s => s.Adult)
+                            </div>
+                            <div class="col-md-9">
+                                @Model.Adult
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.DisplayNameFor(s => s.Child)
+                            </div>
+                            <div class="col-md-9">
+                                @Model.Child
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.SuppliesForRooms.Count() > 0)
+                    {
+                        <h5 class="m-l-10">Vật tư sử dụng</h5>
+                        <div class="list-group">
+                            @foreach (var item in Model.SuppliesForRooms)
+                            {
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            @item.Supply.Name
+                                        </div>
+                                        <div class="col-md-3">
+                                            @item.Count
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                @if (Model.Images.Count() > 0)
+                {
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            @for (int i = 0; i < Model.Images.Count(); i++)
+                            {
+                                <li data-target="#carousel-example-generic" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+                            }
+                        </ol>
+                        <div class="carousel-inner" role="listbox">
+                            @for (int i = 0; i < Model.Images.Count(); i++)
+                            {
+                                <div class="item @(i == 0 ? "active" : "") col-md-offset-3 col-md-6 col-sm-12">
+                                    <img src="@Model.Images.ElementAt(i).URL" style="width: 100% !important; margin: auto" class="img-responsive center-block" />
+                                </div>
+                            }
+                        </div>
+                        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                }
+            </div>
+            @if (role == "MANAGER")
+            {
+                <div class="panel-footer">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                        <a href="@Url.Action("EditInfo","Rooms", new { id = Model.ID.Trim() })" class="btn btn-primary waves-effect">
+                            <i class="material-icons">edit</i>
+                            <span>EDIT INFO</span>
+                        </a>
+                        <a href="@Url.Action("EditImg","Rooms", new { id = Model.ID.Trim() })" class="btn btn-toolbar waves-effect">
+                            <i class="material-icons">image</i>
+                            <span>EDIT IMAGE</span>
+                        </a>
+                        <a href="javascript:void(0);" role="button" class="btn btn-danger waves-effect" id="btnRemove">
+                            <i class="material-icons">remove_circle</i>
+                            <span>REMOVE</span>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Areas/Server/resources/plugins/sweetalert/sweetalert.min.js"></script>
+    <script>
+        $(function () {
+            $('#btnRemove').on('click', function () {
+                remove();
+            });
+        });
+        function remove() {
+            swal({
+                title: "Do you want to remove this room?",
+                text: "Room id: @Model.ID",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Remove")',
+                        data: { id: '@Model.ID.Trim()' },
+                        success: function (res) {
+                            if (res === true) {
+                                swal("Remove success!");
+                                setTimeout(function () {
+                                    location.href = "@Url.Action("Index")";
+                                }, 500);
+                            }
+                            else swal(res);
+                        },
+                        complete: function (xhr) {
+                            swal(xhr.status);
+                        },
+                        error: function () {
+                            swal("Error when remove, Please try again");
+                            setTimeout(function () {
+                                location.reload();
+                         }, 500);
+                     }
+                });
+            });
+        }
+    </script>
+}

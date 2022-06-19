@@ -1,0 +1,30 @@
+﻿@model WebNC_Project.Models.SuppliesForRoom
+
+<form id="modalForm">
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <h4 class="modal-title">GIVE SUPPLY @Model.SupplyID FOR ROOM</h4>
+    </div>
+    <div class="modal-body">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.SupplyID)
+        <h2 class="card-inside-title">Phòng cần thêm</h2>
+        <div class="form-group">
+            <div class="form-line">
+                @Html.DropDownListFor(s => s.RoomID, ViewBag.ListRoom as SelectList, new { @class = "form-control show-tick" })
+            </div>
+            @Html.ValidationMessageFor(s => s.RoomID, "", new { @class = "text-danger" })
+        </div>
+        <h2 class="card-inside-title">Số lượng</h2>
+        <div class="form-group">
+            <div class="form-line">
+                @Html.EditorFor(s => s.Count, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(s => s.Count, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success waves-effect" onclick="GiveSP()">SUBMIT</button>
+        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
+    </div>
+</form>

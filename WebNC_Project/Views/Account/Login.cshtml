@@ -1,0 +1,49 @@
+﻿@model WebNC_Project.ViewModel.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+}
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="contact-text">
+                    <h2>Login</h2>
+                    <p>
+                        Sign in with your account to booking room and using our services
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7 offset-lg-1">
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "contact-form" }))
+                {
+                    @Html.ValidationSummary(true)
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Username, new { htmlAttributes = new { @placeholder = "Enter Username" } })
+
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @placeholder = "Enter Password" } })
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit">Log In Now</button>
+                            <button type="button" onclick="Register()">Register</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+    function Register() {
+        window.location.href = "@Url.Action("Index","Home")"
+    }
+    </script>
+}

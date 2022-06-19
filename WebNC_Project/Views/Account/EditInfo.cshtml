@@ -1,0 +1,82 @@
+﻿@model WebNC_Project.Models.Customer
+
+@{
+    ViewBag.Title = "EditInfo";
+    List<SelectListItem> genders = new List<SelectListItem>()
+{
+        new SelectListItem(){ Value="true", Text="Nam" },
+        new SelectListItem(){ Value="false", Text="Nữ" }
+    };
+}
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="contact-text">
+                    <h2>Management your account</h2>
+                    <p>Edit information</p>
+                </div>
+            </div>
+
+            <div class="col-lg-7 offset-lg-1">
+                @using (Html.BeginForm("EditInfo", "Account", FormMethod.Post, new { @class = "contact-form" }))
+                {
+                    @Html.ValidationSummary(true)
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.Password)
+                    @Html.HiddenFor(m => m.ID)
+                    <div class="row">
+                        <div class="col-md-3">
+                            @Html.LabelFor(m => m.Name)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @placeholder = "Enter Name" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(m => m.Phone)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Phone, new { htmlAttributes = new { @placeholder = "Enter your Phone" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(m => m.Email)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @placeholder = "Enter your Email" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(m => m.Birth)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(m => m.Birth, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Birth, new { htmlAttributes = new { @placeholder = "Enter your Birth", @class = "birth" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(m => m.Gender)
+                        </div>
+                        <div class="col-md-10 select-option">
+                            @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(m => m.Gender, genders, new { @placeholder = "Select Gender", @class = "select-list" })
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <button type="submit">Register Account</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        $(function () {
+            $(".birth").datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+        })
+    </script>
+}
+

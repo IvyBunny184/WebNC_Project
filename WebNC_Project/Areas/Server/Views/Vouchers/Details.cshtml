@@ -1,0 +1,123 @@
+﻿@model WebNC_Project.Models.Voucher
+
+@{
+    ViewBag.Title = "Thông tin Voucher";
+    string role = Session["Role"] as string;
+}
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        <div class="panel panel-default panel-post">
+            <div class="panel-heading">
+                <h4>@Html.DisplayNameFor(s => s.Code) : @Model.Code</h4>
+            </div>
+            <div class="panel-body">
+                <div class="list-group font-16">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.DisplayNameFor(s => s.FromDate)
+                            </div>
+                            <div class="col-md-9">
+                                @Model.FromDate.ToString("dd/MM/yyyy")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.DisplayNameFor(s => s.ToDate)
+                            </div>
+                            <div class="col-md-9">
+                                @Model.ToDate.ToString("dd/MM/yyyy")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.DisplayNameFor(s => s.Discount)
+                            </div>
+                            <div class="col-md-9">
+                                @Model.Discount %
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.DisplayNameFor(s => s.Condition)
+                            </div>
+                            <div class="col-md-9">
+                                &GreaterEqual; @Model.Condition
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (role == "MANAGER")
+            {
+                <div class="panel-footer">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                        <a href="@Url.Action("Edit","Vouchers", new { id = Model.Code.Trim() })" class="btn btn-primary waves-effect">
+                            <i class="material-icons">edit</i>
+                            <span>EDIT</span>
+                        </a>
+                        <a href="javascript:void(0);" role="button" class="btn btn-danger waves-effect" id="btnRemove">
+                            <i class="material-icons">remove_circle</i>
+                            REMOVE
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Areas/Server/resources/plugins/sweetalert/sweetalert.min.js"></script>
+    <script>
+        $(function () {
+            $('#btnRemove').on('click', function () {
+                remove();
+            });
+        });
+        function remove() {
+            swal({
+                title: "Do you want to remove this voucher?",
+                text: "Voucher code: @Model.Code",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            }, function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Remove")',
+                        data: { id: '@Model.Code.Trim()' },
+                        success: function () {
+                            swal("Remove success!");
+                            setTimeout(function () {
+                                location.href = "@Url.Action("Index")";
+                            }, 500);
+                        },
+                        complete: function (xhr) {
+                            swal(xhr.status);
+                        },
+                        error: function () {
+                            swal("Error when remove, Please try again");
+                            setTimeout(function () {
+                                location.reload();
+                         }, 500);
+                     }
+                });
+            });
+        }
+    </script>
+}

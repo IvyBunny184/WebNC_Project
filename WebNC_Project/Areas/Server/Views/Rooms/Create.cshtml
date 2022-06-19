@@ -1,0 +1,110 @@
+﻿@model WebNC_Project.Models.Room
+
+@{
+    ViewBag.Title = "Thêm mới Phòng";
+}
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/bootstrap-fileinput/fileinput.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        @using (Html.BeginForm("Create", "Rooms", FormMethod.Post, new { @enctype = "multipart/form-data", @id= "submitFrm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.LabelFor(s => s.ID)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.ID, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.ID, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Name)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-6 col-sm-12">
+                    @Html.LabelFor(s => s.Adult)
+                    <div class="form-group">
+                        <div class="form-line">
+                            @Html.EditorFor(s => s.Adult, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(s => s.Adult, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    @Html.LabelFor(s => s.Child)
+                    <div class="form-group">
+                        <div class="form-line">
+                            @Html.EditorFor(s => s.Child, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(s => s.Child, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-6 col-sm-12">
+                    @Html.LabelFor(s => s.TypeID)
+                    <div class="form-group">
+                        <div class="form-line">
+                            @Html.DropDownListFor(s => s.TypeID, (IEnumerable<SelectListItem>)ViewBag.ListType, new { @class = "selectpicker form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(s => s.TypeID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    @Html.LabelFor(s => s.Price)
+                    <div class="form-group">
+                        <div class="form-line">
+                            @Html.EditorFor(s => s.Price, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(s => s.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            @Html.LabelFor(s => s.Description)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Description, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Description, "", new { @class = "text-danger" })
+            </div>
+            <div class="upload-img">
+                <label for="listimg">Hình ảnh phòng: </label>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input id="input-file" name="listimg" type="file" class="file" data-preview-file-type="text" multiple>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary waves-effect" type="submit" onclick="IsSubmit(this, event)">SUBMIT</button>
+        }
+    </div>
+</div>
+@section scripts {
+    <script src="~/Areas/Server/resources/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap-fileinput/fileinput.js"></script>
+    <script>
+        $.fn.fileinputBsVersion = "3.3.7";
+        $("#input-file").fileinput({
+            'showUpload': false,
+            browseOnZoneClick: true,
+            allowedFileTypes: ['image'],   
+            maxFileCount: 5,
+        });
+        $(function () {
+            $('.selectpicker').selectpicker();
+            
+        })
+    </script>
+}

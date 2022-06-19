@@ -1,0 +1,28 @@
+﻿@{
+    string controller = ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<ul>
+    <li class="@(controller == "Home" ? "active" : "")"><a href="@Url.Action("Index","Home")">Home</a></li>
+    <li class="@(controller == "Rooms" ? "active" : "")"><a href="@Url.Action("Index","Rooms")">Rooms</a></li>
+    <li class="@(controller == "Service" ? "active" : "")"><a href="@Url.Action("Index","Service")">Services</a></li>
+    <li class="@(controller == "Voucher" ? "active" : "")"><a href="@Url.Action("Index","Voucher")">Vouchers</a></li>
+    @if (Session["Customer"] != null)
+    {
+        <li>
+            <a href="@Url.Action("EditInfo","Account")">@Session["NameCus"]</a>
+            <ul class="dropdown">
+                <li><a href="@Url.Action("Index","Booking")">Booking History</a></li>
+                <li><a href="@Url.Action("EditInfo","Account")">Edit Infomation</a></li>
+                <li><a href="@Url.Action("EditPass","Account")">Edit Password</a></li>
+                <li><a href="@Url.Action("Logout","Account")">Log out</a></li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li><a href="@Url.Action("Login","Account")">Sign In</a></li>
+        <li><a href="@Url.Action("Register","Account")">Register</a></li>
+    }
+</ul>
+

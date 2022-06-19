@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebNC_Project.Models.Service>
+
+@{
+    ViewBag.Title = "CallServices";
+    IEnumerable<string> listSV = ViewBag.ListSV;
+    int id = ViewBag.ID;
+}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Dịch vụ cho hóa đơn #@id</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Dịch vụ: @item.Name</h5>
+                        <p class="card-text">Giá sử dụng: @item.Price $</p>
+                        @if (listSV.Contains(item.ID))
+                        {
+                            <button class="btn btn-danger" onclick="RemoveSV(@id,'@(item.ID.Trim())')">Remove</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-success" onclick="AddSV(@id, '@(item.ID.Trim())')">Add</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

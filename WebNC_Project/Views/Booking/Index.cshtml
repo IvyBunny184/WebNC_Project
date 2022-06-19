@@ -1,0 +1,284 @@
+﻿@model IEnumerable<WebNC_Project.Models.Booking>
+
+@{
+    ViewBag.Title = "Index";
+}
+@section styles{
+    <link rel="stylesheet" href="~/resource/css/toastr.css" />
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h2>Booking History</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Danh sách đặt phòng</h5>
+                <div class="list-group mt-2" id="myList" role="tablist">
+                    @foreach ((WebNC_Project.Models.Booking value, Int32 i) in Model.Select((value, i) => (value, i)))
+                    {
+                        <a class="list-group-item list-group-item-action @(i==0?"active":"") d-flex justify-content-between align-items-center"
+                           data-toggle="list" href="#bill-@i" role="tab">
+                            Hóa đơn: #@value.ID <span class="badge badge-@value.GetColor badge-pill">@value.GetStatus</span>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-md-9 mt-3">
+                <div class="tab-content">
+                    @foreach ((WebNC_Project.Models.Booking value, Int32 i) in Model.Select((value, i) => (value, i)))
+                    {
+                        <div class="tab-pane @(i==0?"active":"") card border-@value.GetColor mb-3" id="bill-@i" role="tabpanel">
+                            <div class="card-header bg-@value.GetColor"><h5>Hóa đơn đặt phòng: #@value.ID</h5></div>
+                            <div class="card-body text-primary">
+                                <p class="row card-text">
+                                    <span class="col-md-3">
+                                        <i class="fa fa-home"></i> @Html.DisplayNameFor(m => m.RoomID)
+                                    </span>
+                                    <span class="col-md-9">@value.Room.Name</span>
+                                </p>
+                                <p class="row card-text">
+                                    <span class="col-md-3">
+                                        <i class="fa fa-calendar"></i> @Html.DisplayNameFor(m => m.CheckinDate)
+                                    </span>
+                                    <span class="col-md-3">@value.CheckinDate.ToString("dd/MM/yyyy")</span>
+                                    <span class="col-md-3">
+                                        <i class="fa fa-calendar-check-o"></i> @Html.DisplayNameFor(m => m.CheckoutDate)
+                                    </span>
+                                    <span class="col-md-3">@value.CheckoutDate.ToString("dd/MM/yyyy")</span>
+                                </p>
+                                <p class="row card-text">
+                                    <span class="col-md-3">
+                                        <i class="fa fa-male"></i> @Html.DisplayNameFor(m => m.Adult)
+                                    </span>
+                                    <span class="col-md-3">@value.Adult</span>
+                                    <span class="col-md-3">
+                                        <i class="fa fa-child"></i> @Html.DisplayNameFor(m => m.Child)
+                                    </span>
+                                    <span class="col-md-3">@value.Child</span>
+                                </p>
+                                @if (value.BookingServices.Count() > 0)
+                                {
+                                    <p class="row card-text">
+                                        <strong class="col-md-8">
+                                            <i class="fa fa-plus-square"></i>
+                                            Dịch vụ sử dụng
+                                        </strong>
+                                        @if (value.CanEdit())
+                                        {
+                                            <span class="col-md-4">
+                                                <button onclick="CallSV(@value.ID)" class="btn btn-info btn-block">Chỉnh sửa dịch vụ</button>
+                                            </span>
+                                        }
+                                    </p>
+                                    foreach (var item in value.BookingServices)
+                                    {
+                                        <p class="row card-text">
+                                            <span class="col-md-3">
+                                                Dịch vụ:
+                                            </span>
+                                            <span class="col-md-3">@item.Service.Name</span>
+                                            <span class="col-md-3">
+                                                Giá:
+                                            </span>
+                                            <span class="col-md-3">@item.Service.Price %</span>
+                                        </p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="row card-text">
+                                        <strong class="col-md-8">
+                                            <i class="fa fa-plus-square"></i>
+                                            Không có dịch vụ sử dụng
+                                        </strong>
+                                        @if (value.CanEdit())
+                                        {
+                                            <span class="col-md-4">
+                                                <button onclick="CallSV(@value.ID)" class="btn btn-info btn-block">Gọi dịch vụ</button>
+                                            </span>
+                                        }
+                                    </p>
+                                }
+                                @if (value.VoucherCode != null)
+                                {
+                                    <p class="row card-text">
+                                        <span class="col-md-3">
+                                            <strong><i class="fa fa-gift"></i> Mã voucher:</strong>
+                                        </span>
+                                        <span class="col-md-3">@value.VoucherCode</span>
+                                        <span class="col-md-3">
+                                            <strong><i class="fa fa-percent"></i> Giảm giá:</strong>
+                                        </span>
+                                        <span class="col-md-3">@value.Voucher.Discount %</span>
+                                    </p>
+                                }
+                                @if (value.FeedBack != null)
+                                {
+                                    <p class="row card-text">
+                                        <span class="col-md-3">
+                                            <strong><i class="fa fa-comments-o" aria-hidden="true"></i> Phản hồi:</strong>
+                                        </span>
+                                        <span class="col-md-6">@value.FeedBack</span>
+                                        <span class="col-md-3">
+                                            <strong>Rate: @value.Rate.Value <i class="fa fa-star"></i></strong>
+                                        </span>
+                                    </p>
+                                }
+                                <p class="card-text d-flex justify-content-end">
+                                    <strong><i class="fa fa-money"></i> Tổng giá trị hóa đơn: </strong>
+                                    @WebNC_Project.Models.Booking.GetPrice(value) $
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                @if (value.CanEdit())
+                                {
+                                    <button onclick="Edit(@value.ID)" class="btn btn-info">Cập nhật hóa đơn</button>
+                                }
+                                @if (value.CanPay())
+                                {
+                                    <button onclick="Payment(@value.ID)" class="btn btn-success">Thanh toán hóa đơn</button>
+                                }
+                                @if (value.CanFeedBack())
+                                {
+                                    <button onclick="FeedBack(@value.ID)" class="btn btn-primary">FeedBack</button>
+                                }
+                                @if (value.CheckinDate.Date > DateTime.Now.Date)
+                                {
+                                    <button onclick="Cancel(@value.ID)" class="btn btn-danger">Hủy hóa đơn</button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Modal-->
+<div class="modal fade" id="BookingModal" role="dialog" aria-labelledby="BookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="BookingModalBody">
+        </div>
+    </div>
+</div>
+<input type="hidden" id="toast-msg" value="@ViewBag.Msg" />
+@section scripts{
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="~/resource/js/toastr.js"></script>
+    <script>
+        function Edit(id) {
+            $.get("@Url.Action("Edit")", { id: id } , function (res) {
+                $("#BookingModalBody").html(res);
+                $("#BookingModal").modal('show');
+            })
+        };
+
+        function FeedBack(id) {
+            $.get("@Url.Action("FeedBack")", { id: id } , function (res) {
+                $("#BookingModalBody").html(res);
+                $("#BookingModal").modal('show');
+            })
+        };
+
+        function Cancel(id) {
+            $.post("@Url.Action("Cancel")", {id: id}, function (res) {
+                if (res == true) {
+                    swal({
+                        title: "Cancel success",
+                        text: "Success",
+                        type: "success",
+                        closeOnConfirm: false
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 500);
+                }
+                else {
+                    swal({
+                        title: "Cancel failed",
+                        text: "Failed",
+                        type: "error",
+                        closeOnConfirm: false
+                    });
+                }
+            })
+        }
+
+        function Payment(id) {
+            $.get("@Url.Action("Payment")", { id: id } , function (res) {
+                $("#BookingModalBody").html(res);
+                $("#BookingModal").modal('show');
+            })
+        }
+
+        function SubmitEdit() {
+            var modal = $("#BookingModal");
+            var form = $("#edit_form");
+            var data = form.serialize();
+            $.post("@Url.Action("Edit")", data , function (res) {
+                    if (res == true) {
+                        modal.modal('hide');
+                        window.location.reload();
+                    }
+                    else $("#BookingModalBody").html(res);
+                })
+        }
+
+        function SubmitFeedBack() {
+            var modal = $("#BookingModal");
+            var form = $("#feedback-form");
+            var data = form.serialize();
+            $.post("@Url.Action("FeedBack")", data , function (res) {
+                    if (res == true) {
+                        modal.modal('hide');
+                        window.location.reload();
+                    }
+                    else $("#BookingModalBody").html(res);
+                })
+        }
+
+        function CallSV(id) {
+            $.get("@Url.Action("CallServices")", { id: id }, function (res) {
+                $("#BookingModalBody").html(res);
+                $("#BookingModal").modal('show');
+            })
+        }
+
+        function RemoveSV(bill, sv) {
+            var object = { BookingID: bill, ServiceID: sv }
+            $.post("@Url.Action("RemoveSV")", object, function (res) {
+                if (res == true) {
+                    toastr.success("Remove services success", "Success")
+                    window.location.reload();
+                }
+                else {
+                    toastr.error("Remove services failed", "Error")
+                }
+            })
+        }
+
+        function AddSV(bill, sv) {
+            var object = { BookingID: bill, ServiceID: sv }
+            $.post("@Url.Action("AddSV")", object, function (res) {
+                if (res == true) {
+                    toastr.success("Add services success", "Success")
+                    window.location.reload();
+                }
+                else {
+                    toastr.error("Add services failed", "Error")
+                }
+            })
+        }
+    </script>
+}

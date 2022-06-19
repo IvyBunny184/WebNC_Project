@@ -1,0 +1,85 @@
+﻿@model WebNC_Project.Models.Room
+
+@{
+    ViewBag.Title = "Quản lý ảnh phòng " + Model.ID;
+}
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/bootstrap-fileinput/fileinput.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/light-gallery/css/lightgallery.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        <div id="aniimated-thumbnials" class="row clearfix list-unstyled justified-gallery">
+            @foreach (var img in Model.Images)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <a href="@img.URL">
+                        <img src="@img.URL" class="img-responsive" />
+                    </a>
+                </div>
+            }
+        </div>
+        @using (Html.BeginForm("EditImg", "Rooms", FormMethod.Post, new { @enctype = "multipart/form-data", @id="submitFrm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(s => s.ID)
+            <div class="upload-img">
+                <label for="addnew">Thêm ảnh mới: </label>
+                <div class="form-group">
+                    <div class="form-line">
+                        <input id="input-file" name="addnew" type="file" class="file" data-preview-file-type="text" multiple>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary waves-effect" type="submit" onclick="IsSubmit(this, event)">SUBMIT</button>
+        }
+    </div>
+</div>
+@section scripts {
+    <script src="~/Areas/Server/resources/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap-fileinput/fileinput.js"></script>
+    <script src="~/Areas/Server/resources/plugins/light-gallery/js/lightgallery-all.js"></script>
+    <script src="~/Areas/Server/resources/plugins/sweetalert/sweetalert.min.js"></script>
+    <script>
+        $.fn.fileinputBsVersion = "3.3.7";
+        $("#input-file").fileinput({
+            'showUpload': false,
+            browseOnZoneClick: true,
+            allowedFileTypes: ['image'],
+            maxFileCount: 5,
+        });
+        $('#aniimated-thumbnials').lightGallery({
+            thumbnail: true,
+            selector: 'a',
+        });
+        $(document).on('click', ".lg-object.lg-image", function (event) {
+            var urlImg = event.target.src;
+            swal({
+                title: "Do you want to remove this image?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            },function () {
+                    $.post("@Url.Action("RemoveImg")", { url: urlImg }, function (res) {
+                        if (res === true) {
+                            swal("Remove success!");
+                            setTimeout(function () {
+                                location.href = "@Url.Action("EditImg")"
+                            }, 1000);
+                        }
+                        else swal(res)
+                    })
+            })
+        })
+        $('.selectpicker').selectpicker();
+    </script>
+}

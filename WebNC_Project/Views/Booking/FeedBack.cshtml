@@ -1,0 +1,46 @@
+﻿@model WebNC_Project.ViewModel.FeedBackViewModel
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Feedback hóa đơn #@Model.BillID</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="feedback-form">
+        @Html.ValidationMessage("", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.BillID)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Content)
+            @Html.TextAreaFor(m => m.Content, new { @class = "form-control", @rows="5" })
+            @Html.ValidationMessageFor(m => m.Content, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Rate)
+            <div class="custom-control custom-radio custom-control-inline">
+                @Html.RadioButtonFor(m => m.Rate, 1, new { @class = "custom-control-input", @id = "rate-1" })
+                <label class="custom-control-label" for="rate-1">1 <i class="fa fa-star-o" aria-hidden="true"></i></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                @Html.RadioButtonFor(m => m.Rate, 2, new { @class = "custom-control-input", @id = "rate-2" })
+                <label class="custom-control-label" for="rate-2">2 <i class="fa fa-star-o" aria-hidden="true"></i></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                @Html.RadioButtonFor(m => m.Rate, 3, new { @class = "custom-control-input", @id = "rate-3" })
+                <label class="custom-control-label" for="rate-3">3 <i class="fa fa-star-o" aria-hidden="true"></i></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                @Html.RadioButtonFor(m => m.Rate, 4, new { @class = "custom-control-input", @id = "rate-4" })
+                <label class="custom-control-label" for="rate-4">4 <i class="fa fa-star-o" aria-hidden="true"></i></label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                @Html.RadioButtonFor(m => m.Rate, 5, new { @class = "custom-control-input", @id = "rate-5" })
+                <label class="custom-control-label" for="rate-5">5 <i class="fa fa-star-o" aria-hidden="true"></i></label>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" onclick="SubmitFeedBack()">Submit</button>
+</div>

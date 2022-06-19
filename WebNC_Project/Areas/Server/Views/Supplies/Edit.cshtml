@@ -1,0 +1,58 @@
+﻿@model WebNC_Project.Models.Supply
+
+@{
+    ViewBag.Title = "Cập nhật vật tư " + Model.ID;
+    IEnumerable<SelectListItem> editType = new List<SelectListItem>()
+    {
+        new SelectListItem(){Value="none",Text="Không cập nhật số lượng"},
+        new SelectListItem(){Value="newcount",Text="Tạo mới số lượng"},
+        new SelectListItem(){Value="addcount",Text="Nhập thêm"}
+    };
+}
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        @using (Html.BeginForm(null,null,FormMethod.Post, new { @id = "submitFrm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <h2 class="card-inside-title">@Html.DisplayNameFor(s=>s.Name)</h2>
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.HiddenFor(s => s.Total)
+                </div>
+                @Html.ValidationMessageFor(s => s.Name, "", new { @class = "text-danger" })
+            </div>
+            <h2 class="card-inside-title">Số lượng</h2>
+            <div class="row clearfix">
+                <div class="col-md-3 col-sm-12">
+                    <div class="form-group">
+                        <div class="form-line">
+                            @Html.DropDownList("EditType", editType, new { @class = "form-control show-tick"})
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-12">
+                    <div class="form-group">
+                        <div class="form-line">
+                            @Html.Editor("Count", new { htmlAttributes = new { @class = "form-control", @type="number"} })
+                        </div>
+                    </div>
+                    @Html.ValidationMessage("Count", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <button class="btn btn-primary waves-effect" type="submit" onclick="IsSubmit(this, event)">Update</button>
+        }
+    </div>
+</div>
+@section scripts {
+    <script src="~/Areas/Server/resources/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+}

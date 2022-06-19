@@ -1,0 +1,41 @@
+﻿
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+    string iconctrl, iconaction;
+    switch (controller)
+    {
+        case "Rooms": iconctrl = "meeting_room"; break;
+        case "Staffs": iconctrl = "badge"; break;
+        case "Customers": iconctrl = "people"; break;
+        case "Services": iconctrl = "room_service"; break;
+        case "Supplies": iconctrl = "personal_video"; break;
+        case "Vouchers": iconctrl = "card_giftcard"; break;
+        case "Bookings": iconctrl = "receipt"; break;
+        default: iconctrl = "home"; break;
+    }
+    switch (action)
+    {
+        case "Index": iconaction = "list_alt"; break;
+        case "Create": iconaction = "add_circle"; break;
+        case "Details": iconaction = "info"; break;
+        case "Edit": iconaction = "edit"; break;
+        case "EditImg": iconaction = "image"; break;
+        case "EditInfo": iconaction = "announcement"; break;
+        default: iconaction = "home"; break;
+    }
+}
+
+<ol class="breadcrumb breadcrumb-bg-cyan">
+    <li>
+        <a href="javascript:void(0);">
+            <i class="material-icons">@iconctrl</i> @controller
+        </a>
+    </li>
+    <li>
+        <a href="javascript:void(0);">
+            <i class="material-icons">@iconaction</i> @action
+        </a>
+    </li>
+</ol>
+

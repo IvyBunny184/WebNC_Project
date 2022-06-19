@@ -1,0 +1,29 @@
+﻿@model WebNC_Project.Models.RoomType
+
+<form id="addForm">
+    @Html.AntiForgeryToken()
+    <div class="modal-header">
+        <h4 class="modal-title">ADD NEW ROOM</h4>
+    </div>
+    <div class="modal-body">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.LabelFor(s => s.ID)
+        <div class="form-group">
+            <div class="form-line">
+                @Html.EditorFor(s => s.ID, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(s => s.ID, "", new { @class = "text-danger" })
+        </div>
+        @Html.LabelFor(s => s.NameType)
+        <div class="form-group">
+            <div class="form-line">
+                @Html.EditorFor(s => s.NameType, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.ValidationMessageFor(s => s.NameType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success waves-effect" onclick="Create()">CREATE</button>
+        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
+    </div>
+</form>

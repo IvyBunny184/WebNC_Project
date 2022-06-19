@@ -1,0 +1,86 @@
+﻿@model WebNC_Project.Models.Customer
+
+@{
+    ViewBag.Title = "Thêm mới khách hàng";
+}
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        @using (Html.BeginForm("Create","Customers",FormMethod.Post, new { @id = "submitFrm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.LabelFor(s => s.ID)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.ID, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.ID, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Name)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Name, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Birth)
+            <div class="form-group">
+                <div class="form-line" id="bs_datepicker_container">
+                    @Html.EditorFor(s => s.Birth, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Birth, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Gender)
+            <div class="form-group">
+                <input type="radio" name="Gender" id="male" class="with-gap" value="true" checked>
+                <label for="male">Male</label>
+
+                <input type="radio" name="Gender" id="female" class="with-gap" value="false">
+                <label for="female" class="m-l-20">Female</label>
+            </div>
+            @Html.LabelFor(s => s.Phone)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Phone, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Email)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Email, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Email, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Password)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Password, "", new { @class = "text-danger" })
+            </div>
+            <button class="btn btn-primary waves-effect" type="submit" onclick="IsSubmit(this, event)">SUBMIT</button>
+        }
+    </div>
+</div>
+@section scripts {
+    <script src="~/Areas/Server/resources/plugins/momentjs/moment.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script>
+        $(function () {
+            $('#bs_datepicker_container input').datepicker({
+                autoclose: true,
+                format: 'dd/mm/yyyy',
+                container: '#bs_datepicker_container'
+            });
+        })
+    </script>
+}

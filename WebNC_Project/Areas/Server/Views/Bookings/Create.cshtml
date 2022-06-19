@@ -1,0 +1,89 @@
+﻿@model WebNC_Project.Models.Booking
+@{
+    ViewBag.Title = "Tạo hóa đơn đặt phòng";
+}
+
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+}
+
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "submitFrm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.LabelFor(m => m.CustomerID)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.DropDownListFor(m => m.CustomerID, (IEnumerable<SelectListItem>)ViewBag.ListCus, new { @class = "selectpicker form-control" })
+                </div>
+                @Html.ValidationMessageFor(m => m.CustomerID, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => m.RoomID)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.DropDownListFor(m => m.RoomID, (IEnumerable<SelectListItem>)ViewBag.ListRoom, new { @class = "selectpicker form-control" })
+                </div>
+                @Html.ValidationMessageFor(m => m.RoomID, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => m.CheckinDate)
+            <div class="form-group">
+                <div class="form-line" id="bs_datepicker_container">
+                    @Html.EditorFor(m => m.CheckinDate, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(m => m.CheckinDate, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => m.CheckoutDate)
+            <div class="form-group">
+                <div class="form-line" id="bs_datepicker_container">
+                    @Html.EditorFor(m => m.CheckoutDate, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(m => m.CheckoutDate, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => m.Adult)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(m => m.Adult, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(m => m.Adult, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => m.Child)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(m => m.Child, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(m => m.Child, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => m.VoucherCode)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(m => m.VoucherCode, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(m => m.VoucherCode, "", new { @class = "text-danger" })
+            </div>
+            <button class="btn btn-primary waves-effect" type="submit" onclick="IsSubmit(this, event)">SUBMIT</button>
+        }
+    </div>
+</div>
+@section scripts {
+    <script src="~/Areas/Server/resources/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/Areas/Server/resources/plugins/momentjs/moment.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script>
+        $(function () {
+            $('#bs_datepicker_container input').datepicker({
+                autoclose: true,
+                container: '#bs_datepicker_container',
+                format: 'dd/mm/yyyy' 
+            });
+            $('.selectpicker').selectpicker();
+        })
+    </script>
+}

@@ -1,0 +1,353 @@
+﻿@model WebNC_Project.Models.Booking
+
+@{
+    ViewBag.Title = "Thông tin đặt phòng";
+}
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+}
+
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+        <ul class="header-dropdown m-r--5">
+            <li class="dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons">more_vert</i>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    @if (Model.Status.IsEmpty())
+                    {
+                        <li><a onclick="Accept('confirm')">Xác nhận hóa đơn</a></li>
+                    }
+                    @if (Model.Status != "payment" && Model.Status != "cancel")
+                    {
+                        if (Model.CheckinDate.Date <= DateTime.Now.Date && Model.Status == "confirm")
+                        {
+                            <li><a onclick="Accept('checkin')">Xác nhận check in</a></li>
+                        }
+                        if (Model.CheckoutDate.Date <= DateTime.Now.Date && Model.Status == "checkin")
+                        {
+                            <li><a onclick="Accept('checkout')">Xác nhận check out</a></li>
+                        }
+                        if (Model.Status == "checkout")
+                        {
+                            <li><a onclick="Accept('payment')">Xác nhận thanh toán</a></li>
+                        }
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="body">
+        <div class="panel panel-default panel-post">
+            <div class="panel-heading">
+                <h4>Mã đặt phòng: @Model.ID</h4>
+            </div>
+            <div class="panel-body">
+                <div class="list-group font-16">
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                Mã khách hàng:
+                            </div>
+                            <div class="col-md-3">
+                                @Model.CustomerID
+                            </div>
+                            <div class="col-md-3">
+                                Tên khách hàng:
+                            </div>
+                            <div class="col-md-3">
+                                @Model.Customer.Name
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                Mã phòng:
+                            </div>
+                            <div class="col-md-3">
+                                @Model.RoomID
+                            </div>
+                            <div class="col-md-3">
+                                Tên phòng:
+                            </div>
+                            <div class="col-md-3">
+                                @Model.Room.Name
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                Ngày check in:
+                            </div>
+                            <div class="col-md-3">
+                                @Model.CheckinDate.ToString("dd/MM/yyyy")
+                            </div>
+                            <div class="col-md-3">
+                                Ngày check out:
+                            </div>
+                            <div class="col-md-3">
+                                @Model.CheckoutDate.ToString("dd/MM/yyyy")
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.BookingServices.Count() > 0)
+                    {
+                        <div class="list-group-item">
+                            <h4>Dịch vụ sử dụng</h4>
+                            @foreach (var sv in Model.BookingServices)
+                            {
+                                <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            Tên dịch vụ: @sv.Service.Name
+                                        </div>
+                                        <div class="col-md-6">
+                                            Giá dịch vụ: @sv.Service.Price
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    @if (Model.VoucherCode != null)
+                    {
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    Voucher code:
+                                </div>
+                                <div class="col-md-9">
+                                    @Model.VoucherCode
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                Tổng hóa đơn:
+                            </div>
+                            <div class="col-md-9">
+                                @WebNC_Project.Models.Booking.GetPrice(Model) $
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3">
+                                Trạng thái:
+                            </div>
+                            <div class="col-md-9">
+                                @Model.GetStatus
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                    @if (Model.CheckoutDate.Date >= DateTime.Now.Date && Model.Status != "cancel" && Model.Status != null)
+                    {
+                        <a onclick="Edit()" class="btn btn-primary waves-effect">
+                            <i class="material-icons">edit</i>
+                            <span>EDIT</span>
+                        </a>
+                        <a onclick="CallSV()" class="btn btn-secondary waves-effect">
+                            <i class="material-icons">edit</i>
+                            <span>CALL SERVICES</span>
+                        </a>
+                        <a onclick="Accept('cancel')" class="btn btn-warning waves-effect">
+                            <i class="material-icons">remove_circle</i>
+                            <span>CANCEL</span>
+                        </a>
+                    }
+                    @if (Model.Status.IsEmpty())
+                    {
+                        <a onclick="Remove()" role="button" class="btn btn-danger waves-effect" id="btnRemove">
+                            <i class="material-icons">remove_circle</i>
+                            REMOVE
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+>
+<!--Modal-->
+<div class="modal fade" id="BookingModal" role="dialog" aria-labelledby="BookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="BookingModalBody">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Areas/Server/resources/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/Areas/Server/resources/plugins/momentjs/moment.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Areas/Server/resources/plugins/sweetalert/sweetalert.min.js"></script>
+    <script>
+        function Edit() {
+            $.get("@Url.Action("Edit")", { id: @Model.ID } , function (res) {
+                $("#BookingModalBody").html(res);
+                $("#BookingModal").modal('show');
+            })
+        };
+        function SubmitEdit() {
+            var modal = $("#BookingModal");
+            var form = $("#edit_form");
+            var data = form.serialize();
+            $.post("@Url.Action("Edit")", data , function (res) {
+                    if (res == true) {
+                        modal.modal('hide');
+                        window.location.reload();
+                    }
+                    else $("#BookingModalBody").html(res);
+                })
+        }
+
+        function CallSV() {
+            $.get("@Url.Action("CallServices")", { id: @Model.ID } , function (res) {
+                $("#BookingModalBody").html(res);
+                $("#BookingModal").modal('show');
+            })
+        }
+
+        function RemoveSV(bill, sv) {
+            var object = { BookingID: bill, ServiceID: sv }
+            $.post("@Url.Action("RemoveSV")", object, function (res) {
+                if (res == true) {
+                    swal({
+                        title: "Remove servicess",
+                        text: "Success",
+                        type: "success",
+                        closeOnConfirm: false
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 500);
+                }
+                else {
+                    swal({
+                        title: "Remove servicess",
+                        text: "Failed",
+                        type: "error",
+                        closeOnConfirm: false
+                    });
+                }
+            })
+        }
+
+        function AddSV(bill, sv) {
+            var object = { BookingID: bill, ServiceID: sv }
+            $.post("@Url.Action("AddSV")", object, function (res) {
+                if (res == true) {
+                    swal({
+                        title: "Add servicess",
+                        text: "Success",
+                        type: "success",
+                        closeOnConfirm: false,
+                        showCancelButton: true,
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 500);
+                }
+                else {
+                    swal({
+                        title: "Remove servicess",
+                        text: "Failed",
+                        type: "error",
+                        closeOnConfirm: false
+                    });
+                }
+            })
+        }
+
+        function Accept(status) {
+            var object = { id: @Model.ID, status: status }
+            swal({
+                title: "Are you sure?",
+                text: "When accept, you will not be able to recover this status bill!",
+                icon: "warning",
+                buttons: true,
+                showCancelButton: true,
+                dangerMode: true,
+            }, function(willDelete) {
+                if (willDelete) {
+                   $.post("@Url.Action("AcceptBill")", object, function (res) {
+                        if (res == true) {
+                            swal({
+                                title: "Confirm servicess",
+                                text: "Success",
+                                type: "success",
+                                closeOnConfirm: false
+                            });
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 500);
+                        }
+                        else {
+                            swal({
+                                title: "Confirm servicess",
+                                text: "Failed",
+                                type: "error",
+                                closeOnConfirm: false
+                            });
+                        }
+                    })
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+
+        }
+
+        function Remove() {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this bill!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                showCancelButton: true,
+            }, function(willDelete) {
+                if (willDelete) {
+                    $.post("@Url.Action("Remove")", { id: @Model.ID}, function (res) {
+                        if (res == true) {
+                            swal("Poof! Your bill has been deleted!", {
+                                icon: "success",
+                            });
+                            setTimeout(function () {
+                                window.location.href = "@Url.Action("Index")"
+                            }, 500);
+                        }
+                        else {
+                            swal({
+                                title: "Remove booking bill",
+                                text: "Failed",
+                                type: "error",
+                                closeOnConfirm: false
+                            });
+                        }
+                    })
+                    swal("Poof! Your bill has been deleted!", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+        }
+    </script>
+}

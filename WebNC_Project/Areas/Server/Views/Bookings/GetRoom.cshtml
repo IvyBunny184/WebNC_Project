@@ -1,0 +1,26 @@
+﻿@model WebNC_Project.Models.Booking
+
+@{
+    ViewBag.Title = "GetRoom";
+}
+
+<h2>GetRoom</h2>
+
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        <p> @Model.CustomerID</p>
+        <p>@Model.CheckinDate</p>
+        <p>@Model.CheckoutDate</p>
+        <ul class="list-group">
+            @foreach (var r in ViewBag.ListRoom as SelectList)
+            {
+                <li class="list-group-item"> @r.Value : @r.Text</li>
+            }
+        </ul>
+    </div>
+</div>

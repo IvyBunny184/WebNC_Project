@@ -1,0 +1,71 @@
+﻿@using PagedList
+@model PagedList.IPagedList<WebNC_Project.Models.Voucher>
+
+@{
+    ViewBag.Title = "Index";
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h2>Our offer for you</h2>
+                    <div class="bt-option">
+                        <a href="@Url.Action("Index")">Voucher</a>
+                        <span>List</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+<!-- Vouchers Section Begin -->
+<!-- Blog Section Begin -->
+<section class="blog-section blog-page spad">
+    <div class="container">
+        <div class="row">
+            @foreach(var v in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="blog-item set-bg" data-setbg="/resource/img/blog/blog-7.jpg">
+                        <div class="bi-text">
+                            <span class="b-tag">Discount: @v.Discount %</span>
+                            <h4>
+                                <a>CODE: @v.Code</a>
+                            </h4>
+                            <h4 class="b-time">
+                                Apply to bill with a minimum value of @v.Condition
+                            </h4>
+                            <div class="b-time">From <i class="icon_clock_alt"></i> @v.FromDate.ToString("dd/MM/yyyy")</div>
+                            <div class="b-time">To <i class="icon_clock_alt"></i> @v.ToDate.ToString("dd/MM/yyyy")</div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            <div class="col-lg-12">
+                <div class="room-pagination">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <a href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">
+                            <i class="fa fa-long-arrow-left"></i> Prev
+                        </a>
+                    }
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <a href="@Url.Action("Index", new { page = i })" class="@(i==Model.PageNumber ? "active" : "")">@i</a>
+                    }
+                    @if (Model.PageNumber < Model.PageCount)
+                    {
+                        <a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">
+                            Next <i class="fa fa-long-arrow-right"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Vouchers Section End -->

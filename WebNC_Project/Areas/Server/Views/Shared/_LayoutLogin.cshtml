@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>@ViewBag.Title</title>
+    <!--Font-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <link href="~/Areas/Server/resources/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/css/style.css" rel="stylesheet" />
+</head>
+<body class="login-page">
+    @RenderBody()
+    <script src="~/Areas/Server/resources/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="~/Areas/Server/resources/plugins/node-waves/waves.js"></script>
+    <script src="~/Areas/Server/resources/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/Areas/Server/resources/js/admin.js"></script>
+    <script src="~/Areas/Server/resources/js/pages/examples/sign-in.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

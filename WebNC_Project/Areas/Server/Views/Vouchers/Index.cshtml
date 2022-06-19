@@ -1,0 +1,83 @@
+﻿@model IEnumerable<WebNC_Project.Models.Voucher>
+
+@{
+    ViewBag.Title = "Danh sách Voucher";
+}
+@section styles {
+    <!--DataTable CSS-->
+    <link href="~/Areas/Server/resources/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        <div class="table-responsive">
+            <table id="table" class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Code)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FromDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ToDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Discount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Condition)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Code
+                            </td>
+                            <td>
+                                @item.FromDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @item.ToDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @item.Discount %
+                            </td>
+                            <td>
+                                &GreaterEqual; @item.Condition
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <!--DataTable JS-->
+    <script src="~/Areas/Server/resources/plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="~/Areas/Server/resources/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script>
+        $(function () {
+            var table = $('#table').DataTable({
+                responsive: true,
+                "oSearch": { "sSearch": "@ViewBag.Search" }
+            });
+            $('#table tbody').on('click', 'tr', function () {
+                var data = table.row(this).data();
+                var url = '@Url.Action("Details", "Vouchers", new { id = "__id__" })';
+                window.location.href = url.replace('__id__',data[0])
+            });
+        })
+    </script>
+}

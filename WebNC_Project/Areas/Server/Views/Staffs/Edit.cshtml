@@ -1,0 +1,91 @@
+﻿@model WebNC_Project.Models.Staff
+
+@{
+    ViewBag.Title = "Cập nhật thông tin nhân viên " + Model.ID;
+}
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        @using (Html.BeginForm("Edit" , "Staffs",FormMethod.Post, new { @id = "submitFrm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.LabelFor(s => s.Name)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Name, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Birth)
+            <div class="form-group">
+                <div class="form-line" id="bs_datepicker_container">
+                    @Html.EditorFor(s => s.Birth, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Birth, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Gender)
+            <div class="form-group">
+                <input type="radio" name="Gender" id="male" class="with-gap" value="true" checked>
+                <label for="male">Male</label>
+
+                <input type="radio" name="Gender" id="female" class="with-gap" value="false">
+                <label for="female" class="m-l-20">Female</label>
+            </div>
+            @Html.LabelFor(s => s.Phone)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Phone, new { htmlAttributes = new { @class = "form-control" } })                    
+                </div>
+                @Html.ValidationMessageFor(s => s.Phone, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Email)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Email, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Email, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Password)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Password, new { htmlAttributes = new { @class = "form-control", @Value = Model.Password } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Password, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.PermissionID)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.DropDownListFor(s => s.PermissionID, (IEnumerable<SelectListItem>)ViewBag.ListPer, new { @class = "selectpicker form-control" })
+
+                </div>
+            </div>
+
+            <button class="btn btn-primary waves-effect" type="submit" onclick="IsSubmit(this, event)">SUBMIT</button>
+        }
+    </div>
+</div>
+@section scripts {
+    <script src="~/Areas/Server/resources/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/Areas/Server/resources/plugins/momentjs/moment.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script>
+        $(function () {
+            $('#bs_datepicker_container input').datepicker({
+                autoclose: true,
+                container: '#bs_datepicker_container',
+                format: 'dd/mm/yyyy' 
+            });
+            $('.selectpicker').selectpicker();
+        })
+    </script>
+}
+

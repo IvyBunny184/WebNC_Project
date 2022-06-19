@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>@ViewBag.Title</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="~/Areas/Server/resources/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="~/Areas/Server/resources/plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="~/Areas/Server/resources/plugins/animate-css/animate.css" rel="stylesheet" />
+
+    @RenderSection("styles", required: false)
+    <!-- Custom Css -->
+    <link href="~/Areas/Server/resources/css/style.css" rel="stylesheet">
+
+    <!--SweetAlert Css-->
+    <link href="~/Areas/Server/resources/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="~/Areas/Server/resources/css/themes/all-themes.css" rel="stylesheet" />
+
+</head>
+<body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    @Html.Partial("_SearchBar")
+    @Html.Partial("_TopBar")
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            @{Html.RenderAction("UserInfo", "Account");}
+            <!-- Menu -->
+            @Html.Partial("_MenuSideBar")
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2022 <a href="javascript:void(0);">NGResortAdmin - Anh Thư</a>.
+                </div>
+                <div class="version">
+                    <b>Version: </b> 1.0.0
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    @*<div class="card">
+                            <div class="header">
+                                <h2>
+                                    @ViewBag.Title.ToUpper()
+                                </h2>
+                            </div>
+                            @RenderBody()
+                        </div>*@
+                    @Html.Partial("_Breadcrumb")
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Jquery Core Js -->
+    <script src="~/Areas/Server/resources/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="~/Areas/Server/resources/plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="~/Areas/Server/resources/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="~/Areas/Server/resources/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="~/Areas/Server/resources/plugins/node-waves/waves.js"></script>
+
+    <!--SweetAlert Js-->
+    <script src="~/Areas/Server/resources/plugins/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Custom Js -->
+    <script src="~/Areas/Server/resources/js/admin.js"></script>
+
+    <!-- Demo Js -->
+    <script src="~/Areas/Server/resources/js/demo.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

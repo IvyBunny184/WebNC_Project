@@ -1,0 +1,82 @@
+﻿@model WebNC_Project.Models.Voucher
+
+@{
+    ViewBag.Title = "Cập nhật Voucher " + Model.Code;
+}
+@section styles {
+    <link href="~/Areas/Server/resources/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { @id="submitFrm" }))
+        {
+            @Html.HiddenFor(s => s.Code)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="row clearfix">
+                <div class="col-md-6 col-sm-12">
+                    @Html.LabelFor(s => s.FromDate)
+                    <div class="form-group">
+                        <div class="form-line bs_datepicker_from">
+                            @Html.EditorFor(s => s.FromDate, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(s => s.FromDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    @Html.LabelFor(s => s.ToDate)
+                    <div class="form-group">
+                        <div class="form-line bs_datepicker_to">
+                            @Html.EditorFor(s => s.ToDate, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(s => s.ToDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-6 col-sm-12">
+                    @Html.LabelFor(s => s.Condition)
+                    <div class="form-group">
+                        <div class="form-line">
+                            @Html.EditorFor(s => s.Condition, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(s => s.Condition, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    @Html.LabelFor(s => s.Discount)
+                    <div class="form-group">
+                        <div class="form-line">
+                            @Html.EditorFor(s => s.Discount, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(s => s.Discount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary waves-effect" type="submit" onclick="IsSubmit(this, event)">Update</button>
+        }
+    </div>
+</div>
+@section scripts {
+    <script src="~/Areas/Server/resources/plugins/momentjs/moment.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script>
+        $(function () {
+            $('.bs_datepicker_from input').datepicker({
+                autoclose: true,
+                container: '.bs_datepicker_from',
+                format: 'dd/mm/yyyy' 
+            });
+            $('.bs_datepicker_to input').datepicker({
+                autoclose: true,
+                container: '.bs_datepicker_to',
+                format: 'dd/mm/yyyy' 
+            });
+        })
+    </script>
+}

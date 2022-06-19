@@ -1,0 +1,64 @@
+﻿@using PagedList
+@model PagedList.IPagedList<WebNC_Project.Models.Service>
+@{
+    ViewBag.Title = "Index";
+}
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h2>Our Services</h2>
+                    <div class="bt-option">
+                        <a href="@Url.Action("Index")">Services</a>
+                        <span>List</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+<!-- Services Section Begin -->
+<section class="rooms-section spad">
+    <div class="container">
+        <div class="row">
+            @foreach (var r in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="blog-item set-bg" data-setbg="/resource/img/blog/blog-6.jpg">
+                        <div class="bi-text">
+                            <span class="b-tag">@r.Price $</span>
+                            <h4>
+                                <a>Dịch vụ: @r.Name</a>
+                            </h4>
+                            <a href="@Url.Action("Details", null, new { id = r.ID.Trim() })" class="primary-btn">More Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-lg-12">
+                <div class="room-pagination">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <a href="@Url.Action("Index", new { page = Model.PageNumber - 1 })">
+                            <i class="fa fa-long-arrow-left"></i> Prev
+                        </a>
+                    }
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <a href="@Url.Action("Index", new { page = i })" class="@(i==Model.PageNumber ? "active" : "")">@i</a>
+                    }
+                    @if (Model.PageNumber < Model.PageCount)
+                    {
+                        <a href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">
+                            Next <i class="fa fa-long-arrow-right"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Services Section End -->

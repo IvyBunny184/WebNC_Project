@@ -1,0 +1,48 @@
+﻿@model WebNC_Project.Models.Service
+
+@{
+    ViewBag.Title = "Cập nhật dịch vụ " + Model.ID;
+}
+<div class="card">
+    <div class="header">
+        <h2>
+            @ViewBag.Title.ToUpper()
+        </h2>
+    </div>
+    <div class="body">
+        @using (Html.BeginForm("Edit", "Services", FormMethod.Post, new { @id = "submitFrm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.LabelFor(s => s.Name)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Name, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Price)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.EditorFor(s => s.Price, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(s => s.Price, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(s => s.Description)
+            <div class="form-group">
+                <div class="form-line">
+                    @Html.TextAreaFor(s => s.Description, new { @class = "form-control no-resize auto-growth" })
+                </div>
+                @Html.ValidationMessageFor(s => s.Description, "", new { @class = "text-danger" })
+            </div>
+            <button class="btn btn-primary waves-effect" type="submit" onclick="IsSubmit(this, event)">Update</button>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Areas/Server/resources/plugins/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('Description');
+    </script>
+}

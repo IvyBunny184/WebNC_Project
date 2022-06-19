@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WebNC_Project.Models.Room>
+
+<!-- Home Room Section Begin -->
+<div class="container-fluid">
+    <div class="hp-room-items">
+        <div class="row">
+            @foreach (var r in Model)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="hp-room-item set-bg" style="background-image: url('@r.Images.FirstOrDefault().URL')">
+                        <div class="hr-text">
+                            <h3>@r.Name</h3>
+                            <h2>@r.Price$<span>/Pernight</span></h2>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="r-o">Type:</td>
+                                        <td>@r.RoomType.NameType</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Max Adult:</td>
+                                        <td>@r.Adult</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="r-o">Max Child:</td>
+                                        <td>@r.Child</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a href="#" class="primary-btn">More Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Home Room Section End -->

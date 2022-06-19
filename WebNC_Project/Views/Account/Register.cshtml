@@ -1,0 +1,77 @@
+﻿@model WebNC_Project.Models.Customer
+
+@{
+    ViewBag.Title = "Register";
+    List<SelectListItem> genders = new List<SelectListItem>()
+    {
+        new SelectListItem(){ Value="true", Text="Nam" },
+        new SelectListItem(){ Value="false", Text="Nữ" }
+    };
+}
+@section styles {
+    <link rel="stylesheet" href="~/Areas/Server/resources/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" />
+}
+
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="contact-text">
+                    <h2>Register</h2>
+                    <p>
+                        Register your account to using our services
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7 offset-lg-1">
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "contact-form" }))
+                {
+                    @Html.ValidationSummary(true)
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @Html.ValidationMessageFor(m => m.ID, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.ID, new { htmlAttributes = new { @placeholder = "Enter Username" } })
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @placeholder = "Enter Name" } })
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Password, new { htmlAttributes = new { @placeholder = "Enter Password" } })
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Phone, new { htmlAttributes = new { @placeholder = "Enter your Phone" } })
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @placeholder = "Enter your Email" } })
+                        </div>
+                        <div class="col-lg-2 select-option">
+                            @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                            @Html.DropDownListFor(m => m.Gender, genders,  new { @placeholder = "Select Gender", @class = "select-list" } )
+                        </div>
+                        <div class="col-lg-10">
+                            @Html.ValidationMessageFor(m => m.Birth, "", new { @class = "text-danger" })
+                            @Html.EditorFor(m => m.Birth, new { htmlAttributes = new { @placeholder = "Enter your Birth", @class="birth" } })
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit">Register Account</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts{
+    <script>
+        $(function () {
+            $(".birth").datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+        })
+    </script>
+}

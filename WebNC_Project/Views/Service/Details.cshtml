@@ -1,0 +1,32 @@
+﻿@model WebNC_Project.Models.Service
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<!-- Header Services Section Begin -->
+<section class="blog-details-hero set-bg" data-setbg="/resource/img/services/service_details.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="bd-hero-text">
+                    <span>Our services is for you</span>
+                    <h2>@Model.Name</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Header Services Section  End -->
+<!-- Services Details Section Begin -->
+<section class="blog-details-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                @Html.Raw(Model.Description)
+            </div>
+        </div>
+    </div>
+</section>
+<div class="mb-5"></div>
+<!-- Services Details Section End -->

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNC_Project", "WebNC_Project\WebNC_Project.csproj", "{800AC355-40E8-470B-B48A-542B902E560E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{800AC355-40E8-470B-B48A-542B902E560E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{800AC355-40E8-470B-B48A-542B902E560E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{800AC355-40E8-470B-B48A-542B902E560E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{800AC355-40E8-470B-B48A-542B902E560E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {77835B88-D72A-4E87-9337-A6401826A78C}
+	EndGlobalSection
+EndGlobal

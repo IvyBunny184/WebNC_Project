@@ -1,0 +1,129 @@
+﻿@model IEnumerable<WebNC_Project.Models.SuppliesForRoom>
+
+@{
+    ViewBag.Title = "Phân phối vật tư " + ViewBag.Supply;
+}
+@section styles {
+    <!--DataTable CSS-->
+    <link href="~/Areas/Server/resources/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="~/Areas/Server/resources/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+}
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-6">
+                <h2>
+                    @ViewBag.Title.ToUpper()
+                </h2>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-sm-offset-2 col-md-3 col-md-offset-3">
+                <button type="button" class="btn btn-primary btn-block waves-effect" onclick="GiveModal()">
+                    <i class="material-icons">add</i>
+                    <span>ADD SUPPLY FOR ROOM</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        <div class="panel panel-default panel-post">
+            <div class="panel-heading">
+                <h4>Vật tư @ViewBag.Supply</h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Mã Phòng
+                                </th>
+                                <th>
+                                    Tên Phòng
+                                </th>
+                                <th>
+                                    Số vật tư
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.RoomID</td>
+                                    <td>@item.Room.Name</td>
+                                    <td>@item.Count</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger waves-effect" onclick='RemoveModal("@item.RoomID", "@ViewBag.Supply")'>Remove</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal-->
+<div class="modal fade" id="SupModal" role="dialog" aria-labelledby="SupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="SupModalBody">
+        </div>
+    </div>
+</div>
+@section scripts{
+    <!--DataTable JS-->
+    <script src="~/Areas/Server/resources/plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="~/Areas/Server/resources/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="~/Areas/Server/resources/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/Areas/Server/resources/plugins/sweetalert/sweetalert.min.js"></script>
+    <script>
+        $(function () {
+            $("#table").DataTable();
+        })
+        function GiveModal() {
+            $.get("@Url.Action("GiveSpForRoom")", { supID: "@ViewBag.Supply" } , function (res) {
+                $("#SupModalBody").html(res);
+                $("#SupModal").modal('show');
+            })
+        };
+        function RemoveModal(roomID, supID) {
+            $.get("@Url.Action("RemoveSPFromRoom")", { roomID : roomID, supID : supID } , function (res) {
+                $("#SupModalBody").html(res);
+                $("#SupModal").modal('show');
+            })
+        }
+        function GiveSP() {
+            var modal = $("#SupModal");
+            var form = $("#modalForm");
+            var enti = form.serialize();
+                $.post("@Url.Action("GiveSpForRoom")", enti , function (res) {
+                    if (res == true) {
+                        modal.modal('hide');
+                        window.location.reload();
+                    }
+                    else if (res == false) {
+                        swal("Error when create, try again")
+                    }
+                    else $("#SupModalBody").html(res);
+                })
+        }
+        function RemoveSP() {
+            var modal = $("#SupModal");
+            var form = $("#modalForm");
+            var enti = form.serialize();
+                $.post("@Url.Action("RemoveSpFromRoom")", enti , function (res) {
+                    if (res == true) {
+                        modal.modal('hide');
+                        window.location.reload();
+                    }
+                    else if (res == false) {
+                        swal("Error when create, try again")
+                    }
+                    else $("#SupModalBody").html(res);
+                })
+        }
+    </script>
+}

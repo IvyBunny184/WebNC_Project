@@ -1,0 +1,107 @@
+﻿@model WebNC_Project.Models.Booking
+
+@{
+    ViewBag.Title = "Create";
+    SelectList listRooms = ViewBag.ListRoom;
+}
+
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h2>Booking</h2>
+                    <div class="bt-option">
+                        <a href="javascript(void:0)">Booking</a>
+                        <span>Create new</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
+<section class="contact-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="about-page-text">
+                    <div class="row">
+                        <div class="col">
+                            <div class="ap-title">
+                                <h2>Thank for using our services.</h2>
+                                <p>
+                                    Built in 1910 during the Belle Epoque period, this hotel is located in the center of
+                                    Paris, with easy access to the city’s tourist attractions. It offers tastefully
+                                    decorated rooms.
+                                </p>
+                                <ul class="ap-services">
+                                    <li><i class="icon_check"></i> Complimentary Daily Breakfast</li>
+                                    <li><i class="icon_check"></i> Modern equipment</li>
+                                    <li><i class="icon_check"></i> Free Wifi.</li>
+                                    <li><i class="icon_check"></i> Discount for bill</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 booking-form">
+                @using (Html.BeginForm("Create", "Booking", FormMethod.Post, new { @class = "contact-form" }))
+                {
+                    @Html.ValidationSummary(true)
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.CustomerID)
+                    <div class="row">
+                        <div class="col-md-2">
+                            @Html.LabelFor(m => m.RoomID)
+                        </div>
+                        <div class="col-md-10 select-option">
+                            @Html.DropDownListFor(m => m.RoomID, listRooms, new { @placeholder = "Select Room", @class = "select-list" })
+                            @Html.ValidationMessageFor(m => m.RoomID, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.LabelFor(m => m.CheckinDate)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => m.CheckinDate, new { htmlAttributes = new { @placeholder = "Enter check in date", @class = "date-input" } })
+                            @Html.ValidationMessageFor(m => m.CheckinDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.LabelFor(m => m.CheckoutDate)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => m.CheckoutDate, new { htmlAttributes = new { @placeholder = "Enter check out date", @class = "date-input" } })
+                            @Html.ValidationMessageFor(m => m.CheckoutDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.LabelFor(m => m.Adult)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => m.Adult, new { htmlAttributes = new { @placeholder = "Enter number of adult" } })
+                            @Html.ValidationMessageFor(m => m.Adult, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.LabelFor(m => m.Child)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => m.Child, new { htmlAttributes = new { @placeholder = "Enter number of child" } })
+                            @Html.ValidationMessageFor(m => m.Child, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.LabelFor(m => m.VoucherCode)
+                        </div>
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => m.VoucherCode, new { htmlAttributes = new { @placeholder = "Enter voucher code if you have" } })
+                            @Html.ValidationMessageFor(m => m.VoucherCode, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <button type="submit">Book Now</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

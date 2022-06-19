@@ -1,0 +1,310 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
+}
+
+@switch (Session["Role"])
+{
+    case "MANAGER":
+        {
+            <div class="menu">
+                <ul class="list">
+                   
+                    <li class="@(controller == "Home" ? "active" : "")">
+                        <a href="@Url.Action("Index","Home")">
+                            <i class="material-icons">home</i>
+                            <span>Trang chủ</span>
+                        </a>
+                    </li>
+                    <!--Booking Menu-->
+                    <li class="@(controller == "Bookings" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">receipt</i>
+                            <span>Hóa đơn</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Bookings" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Bookings")">
+                                    <span>Danh sách hóa đơn</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Bookings" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Bookings")">
+                                    <span>Đặt phòng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--Room Menu-->
+                    <li class="@(controller == "Rooms" || controller == "RoomTypes" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">meeting_room</i>
+                            <span>Phòng</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Rooms" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Rooms")">
+                                    <span>Danh sách phòng</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Rooms" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Rooms")">
+                                    <span>Thêm mới phòng</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "RoomTypes" ? "active" : "")">
+                                <a href="@Url.Action("Index","RoomTypes")">
+                                    <span>Loại phòng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--Staff Menu-->
+                    <li class="@(controller == "Staffs" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">badge</i>
+                            <span>Nhân Viên</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Staffs" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Staffs")">
+                                    <span>Danh sách nhân viên</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Staffs" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Staffs")">
+                                    <span>Thêm mới nhân viên</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--Customer Menu-->
+                    <li class="@(controller == "Customers" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">people</i>
+                            <span>Khách Hàng</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Customers" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Customers")">
+                                    <span>Danh sách khách hàng</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Customers" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Customers")">
+                                    <span>Thêm mới khách hàng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--Service Menu-->
+                    <li class="@(controller == "Services" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">room_service</i>
+                            <span>Dịch Vụ</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Services" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Services")">
+                                    <span>Danh sách dịch vụ</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Services" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Services")">
+                                    <span>Thêm mới dịch vụ</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--Supply Menu-->
+                    <li class="@(controller == "Supplies" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">personal_video</i>
+                            <span>Vật Tư</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Supplies" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Supplies")">
+                                    <span>Danh sách vật tư</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Supplies" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Supplies")">
+                                    <span>Thêm mới vật tư</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--Vouchers Menu-->
+                    <li class="@(controller == "Vouchers" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">card_giftcard</i>
+                            <span>Voucher</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Vouchers" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Vouchers")">
+                                    <span>Danh sách voucher</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Vouchers" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Vouchers")">
+                                    <span>Thêm mới voucher</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        }
+        break;
+    case "STAFF":
+        {
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="@(controller == "Home" ? "active" : "")">
+                        <a href="@Url.Action("Index","Home")">
+                            <i class="material-icons">home</i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <!--Booking Menu-->
+                    <li class="@(controller == "Bookings" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">receipt</i>
+                            <span>Hóa đơn</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Bookings" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Bookings")">
+                                    <span>Danh sách hóa đơn</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Bookings" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Bookings")">
+                                    <span>Đặt phòng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--Room Menu-->
+                    <li class="@(controller == "Rooms" || controller == "RoomTypes" ? "active" : "")">
+                        <a href="@Url.Action("Index","Rooms")">
+                            <i class="material-icons">meeting_room</i>
+                            <span>Phòng</span>
+                        </a>
+                    </li>
+                    <!--Customer Menu-->
+                    <li class="@(controller == "Customers" ? "active" : "")">
+                        <a href="@Url.Action("Index","Customers")">
+                            <i class="material-icons">people</i>
+                            <span>Khách Hàng</span>
+                        </a>
+                    </li>
+                    <!--Vouchers Menu-->
+                    <li class="@(controller == "Vouchers" ? "active" : "")">
+                        <a href="@Url.Action("Index","Vouchers")">
+                            <i class="material-icons">card_giftcard</i>
+                            <span>Voucher</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+        break;
+    case "ADMIN":
+        {
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="@(controller == "Home" ? "active" : "")">
+                        <a href="@Url.Action("Index","Home")">
+                            <i class="material-icons">home</i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <!--Staff Menu-->
+                    <li class="@(controller == "Staffs" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">badge</i>
+                            <span>Nhân Viên</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Staffs" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Staffs")">
+                                    <span>Danh sách nhân viên</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Staffs" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Staffs")">
+                                    <span>Thêm mới nhân viên</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--Customer Menu-->
+                    <li class="@(controller == "Customers" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">people</i>
+                            <span>Khách Hàng</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Customers" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Customers")">
+                                    <span>Danh sách khách hàng</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Customers" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Customers")">
+                                    <span>Thêm mới khách hàng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        }
+        break;
+    case "WAREHOUSE":
+        {
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="@(controller == "Home" ? "active" : "")">
+                        <a href="@Url.Action("Index","Home")">
+                            <i class="material-icons">home</i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <!--Room Menu-->
+                    <li class="@(controller == "Rooms" || controller == "RoomTypes" ? "active" : "")">
+                        <a href="@Url.Action("Index","Rooms")">
+                            <i class="material-icons">meeting_room</i>
+                            <span>Phòng</span>
+                        </a>
+                    </li>
+                    <!--Supply Menu-->
+                    <li class="@(controller == "Supplies" ? "active" : "")">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">personal_video</i>
+                            <span>Vật Tư</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="@(controller == "Supplies" && action == "Index" ? "active" : "")">
+                                <a href="@Url.Action("Index","Supplies")">
+                                    <span>Danh sách vật tư</span>
+                                </a>
+                            </li>
+                            <li class="@(controller == "Supplies" && action == "Create" ? "active" : "")">
+                                <a href="@Url.Action("Create","Supplies")">
+                                    <span>Thêm mới vật tư</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        }
+        break;
+}

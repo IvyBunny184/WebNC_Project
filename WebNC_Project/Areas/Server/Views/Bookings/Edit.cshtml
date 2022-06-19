@@ -1,0 +1,67 @@
+﻿@model WebNC_Project.Models.Booking
+@{ 
+    SelectList listRoom = ViewBag.ListRoom;
+    List<SelectListItem> listCus = ViewBag.ListCus;
+}
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Cập nhật hóa đơn #@Model.ID</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form id="edit_form">
+        @Html.ValidationMessage("", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.ID)
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustomerID, new { @class = "col-form-label" })
+            @Html.DropDownListFor(m => m.CustomerID, listCus, new { @class = "select-list form-control" })
+            @Html.ValidationMessageFor(m => m.CustomerID, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.RoomID, new { @class = "col-form-label" })
+            @Html.DropDownListFor(m => m.RoomID, listRoom, new { @class = "select-list form-control" })
+            @Html.ValidationMessageFor(m => m.RoomID, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group" id="bs_datepicker_container">
+            @Html.LabelFor(m => m.CheckinDate, new { @class = "col-form-label" })
+            @Html.EditorFor(m => m.CheckinDate, new { htmlAttributes = new { @class = "date-picker form-control" } })
+            @Html.ValidationMessageFor(m => m.CheckinDate, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group" id="bs_datepicker_container">
+            @Html.LabelFor(m => m.CheckoutDate, new { @class = "col-form-label" })
+            @Html.EditorFor(m => m.CheckoutDate, new { htmlAttributes = new { @class = "date-picker form-control" } })
+            @Html.ValidationMessageFor(m => m.CheckoutDate, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Adult, new { @class = "col-form-label" })
+            @Html.EditorFor(m => m.Adult, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Adult, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Child, new { @class = "col-form-label" })
+            @Html.EditorFor(m => m.Child, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Child, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.VoucherCode, new { @class = "col-form-label" })
+            @Html.EditorFor(m => m.VoucherCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.VoucherCode, "", new { @class = "text-danger" })
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" onclick="SubmitEdit()">Submit</button>
+</div>
+<script>
+    $(function () {
+        $('#bs_datepicker_container input').datepicker({
+            autoclose: true,
+            container: '#bs_datepicker_container',
+            format: 'dd/mm/yyyy' 
+        });
+        $('.select-list').selectpicker();
+    })
+</script>
